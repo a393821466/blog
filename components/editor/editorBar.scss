@@ -1,0 +1,42 @@
+#myWangEditor {
+  width:100%;
+  .w-e-toolbar {
+    display: block;
+    border:solid 1px #ccc;
+    .w-e-menu {
+      display: inline-block;
+      z-index:900 !important;
+    }
+  }
+  .w-e-text-container{
+      border: 1px solid #ccc;
+      border-top:none;
+      height: 400px;
+      z-index:1 !important;
+  }
+}
+
+@media (max-width: 639px) {
+  #myWangEditor {
+    width: 100% !important;
+    .w-e-toolbar {
+      display: block;
+      .w-e-menu {
+        width: 8%;
+        display: inline-block;
+      }
+    }
+  }
+  .editArticleContainer {
+    width: 100% !important;
+    .m10 {
+      margin: 0px !important;
+    }
+    .el-form {
+      width: 90%;
+    }
+  }
+  .w-e-text-container{
+    height:200px !important;
+  }
+}

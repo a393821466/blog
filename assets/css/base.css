@@ -1,0 +1,15 @@
+*,html,body{
+  margin:0;
+  padding:0;
+}
+body,html,#__nuxt,#__layout,.defaultBody{
+  height:100%;
+}
+.page-enter-active, .path-leave-active{
+  transition: all .5s;
+}
+
+.page-enter,.page-leave-active{
+  opacity: 0;
+  transform: translateX(10px);
+}
