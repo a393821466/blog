@@ -115,7 +115,19 @@
           </el-radio>
         </el-form-item>
         <el-form-item label="内容" :label-width="formLabelWidth" prop="content">
-          <UE :article-dialog="articleDialog" @editorText="editorText" />
+          <!-- <UE :article-dialog="articleDialog" @editorText="editorText" /> -->
+          <no-ssr>
+            <mavon-editor
+              ref="md"
+              v-model="ruleVlue.markContent"
+              :ishljs="true"
+              :placeholder="normalText"
+              :code-style="codeStyle"
+              @change="change"
+              @save="saveFile"
+              @imgAdd="$imgAdd"
+            />
+          </no-ssr>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -135,15 +147,12 @@
 </template>
 
 <script>
-import UE from '@/components/editor'
+// import UE from '@/components/editor'
 import config from '@/utils/address.config'
 import { mapActions, mapGetters } from 'vuex'
-import { setSession, removeSession } from '@/utils/storage'
+// import { setSession, removeSession } from '@/utils/storage'
 export default {
   name: 'ArticleAddDialog',
-  components: {
-    UE
-  },
   props: {
     articleDialog: {
       type: [Object, Array],
@@ -161,6 +170,8 @@ export default {
       formLabelWidth: '80px',
       thumbnailUrl: config.upload.thumbnail,
       dialogTitle: '添加文章',
+      codeStyle: 'vs2015',
+      normalText: '请在这里疯狂输出...',
       ruleVlue: {
         title: '',
         hot: 2,
@@ -170,8 +181,10 @@ export default {
         summary: '',
         imageUrl: '',
         content: '',
+        markContent: '',
         status: 1
       },
+      handbook: '#### how to use mavonEditor in nuxt.js',
       statusList: [
         {
           value: 1,
@@ -249,16 +262,18 @@ export default {
           this.ruleVlue.status = n.value.status
           this.ruleVlue.summary = n.value.summary
           this.ruleVlue.imageUrl = n.value.image
-          setSession('content', n.value)
+          this.ruleVlue.content = n.value.content
+          this.ruleVlue.markContent = n.value.markContent
+          // setSession('content', n.value)
         } else {
           if (n && this.getMenu.length <= 0) {
             this.menu()
           }
           this.clearInput()
         }
-        if (!n.flat) {
-          removeSession('content')
-        }
+        // if (!n.flat) {
+        //   removeSession('content')
+        // }
       },
       deep: true
     }
@@ -268,16 +283,17 @@ export default {
       addArticle: 'article/add',
       getMenuList: 'menu/get',
       getArticle: 'article/get',
-      updatesArticle: 'article/updates'
+      updatesArticle: 'article/updates',
+      upload: 'article/uploadImg'
     }),
     // 关闭弹窗
     handleClose() {
       this.$emit('closeAddArticle', false)
     },
     // 改变editor
-    editorText(val) {
-      this.ruleVlue.content = val
-    },
+    // editorText(val) {
+    //   this.ruleVlue.content = val
+    // },
     // 图片上传
     handleAvatarSuccess(res) {
       // this.ruleVlue.imgUrl = URL.createObjectURL(file.raw);
@@ -308,6 +324,26 @@ export default {
       this.multfileImg = file
       return isType && isLt500K
     },
+    change(value, render) {
+      this.ruleVlue.content = render
+    },
+    // 上传图片
+    $imgAdd(pos, $file) {
+      var formdata = new FormData()
+      formdata.append('fileName', $file)
+      this.upload(formdata)
+        .then(res => {
+          if (res.status) {
+            this.$refs.md.$img2Url(pos, res.value)
+          }
+        })
+        .catch(err => {
+          this.$message.error(err)
+        })
+    },
+    saveFile(value, render) {
+      console.log(value, render)
+    },
     // 重置表单
     clearInput() {
       this.ruleVlue.title = ''
@@ -318,6 +354,7 @@ export default {
       this.ruleVlue.summary = ''
       this.ruleVlue.imageUrl = ''
       this.ruleVlue.content = ''
+      this.ruleVlue.markContent = ''
     },
     // 获取菜单
     menu() {
@@ -395,7 +432,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .dialogArticle {
   .el-dialog {
     width: 800px;
@@ -451,6 +488,12 @@ export default {
     height: 120px;
     padding: 5px 45px 0 15px;
   }
+  .v-note-panel {
+    max-height: 400px;
+  }
+}
+.v-note-help-wrapper {
+  z-index: 3000 !important;
 }
 @media (max-width: 639px) {
   .dialogArticle {

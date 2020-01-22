@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="article_table_content">
     <div class="table-search">
       <el-form ref="form" :inline="true" class="searchView">
         <div class="searchInput s">
@@ -78,9 +78,13 @@
       <el-table v-loading="listLoading" :data="article" style="width: 100%">
         <el-table-column type="expand">
           <template slot-scope="props">
-            <el-form label-position="left" inline class="demo-table-expand">
+            <el-form
+              label-position="left"
+              inline
+              class="demo-table-expand article_text"
+            >
               <el-form-item label="图片:" style="width:45%">
-                <div class="bannerImg">
+                <div class="bannerImg public_row">
                   <el-image
                     slot="reference"
                     style="width: 100%;"
@@ -90,11 +94,7 @@
                 </div>
               </el-form-item>
               <el-form-item label="摘要:" style="width:50%">
-                <span>{{ props.row.summary }}</span>
-              </el-form-item>
-              <el-form-item label="内容:" style="width:100%">
-                <!-- eslint-disable-next-line vue/no-v-html-->
-                <div class="content" v-html="props.row.content" />
+                <span class="public_row">{{ props.row.summary }}</span>
               </el-form-item>
             </el-form>
           </template>
@@ -138,8 +138,15 @@
           prop="create_time"
           :formatter="formDates"
         />
-        <el-table-column fixed="right" label="操作" width="120">
+        <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
+            <el-button
+              type="text"
+              size="small"
+              @click="lookArticles(scope.row)"
+            >
+              查看
+            </el-button>
             <el-button type="text" size="small" @click="handleClick(scope.row)">
               修改
             </el-button>
@@ -164,19 +171,25 @@
       :article-dialog="addFlatData"
       @closeAddArticle="closeAddArticle"
     />
+    <lookArticleBox
+      :look-article-dialog="lookArticleData"
+      @lookArticleDialog="lookArticleDialog"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import addArticleBox from './addArticle'
+import lookArticleBox from './lookArticle'
 import { formartTime } from '@/utils'
 import { setTimeout } from 'timers'
 export default {
   layout: 'frame',
   name: 'Article',
   components: {
-    addArticleBox
+    addArticleBox,
+    lookArticleBox
   },
   data() {
     return {
@@ -234,6 +247,10 @@ export default {
         flat: false,
         value: {},
         type: 'add'
+      },
+      lookArticleData: {
+        flat: false,
+        value: {}
       },
       page: 1,
       pageSize: 10,
@@ -299,6 +316,11 @@ export default {
       this.addFlatData.flat = true
       this.addFlatData.value = row
       this.addFlatData.type = 'update'
+    },
+    // 查看文章
+    lookArticles(row) {
+      this.lookArticleData.flat = true
+      this.lookArticleData.value = row
     },
     // 查找文章
     getArticleList(query) {
@@ -376,6 +398,10 @@ export default {
     // 关闭添加文章弹窗
     closeAddArticle(val) {
       this.addFlatData.flat = val
+    },
+    // 关闭查看文章
+    lookArticleDialog(val) {
+      this.lookArticleData.flat = val
     }
   }
   // async asyncData() {
@@ -387,14 +413,31 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.searchInput {
-  margin-top: 10px;
-}
-.page {
-  margin: 20px 0;
-}
-.table-content {
-  margin-top: 10px;
+<style lang="scss">
+.article_table_content {
+  .searchInput {
+    margin-top: 10px;
+  }
+  .page {
+    margin: 20px 0;
+  }
+  .table-content {
+    margin-top: 10px;
+  }
+  .article_text {
+    .el-form-item__label {
+      width: 100%;
+      border-bottom: 1px solid #409eff;
+      border-top: 1px solid #409eff;
+      background: #409eff;
+      margin-bottom: 5px;
+      text-indent: 10px;
+      font-size: 16px;
+      color: #fff;
+    }
+    .public_row {
+      padding: 0 10px;
+    }
+  }
 }
 </style>

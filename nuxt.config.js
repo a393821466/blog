@@ -34,7 +34,8 @@ module.exports = {
    */
   plugins: [
     { src: '@/plugins/element-ui', ssr: true },
-    { src: '~plugins/axios' }
+    { src: '~plugins/axios' },
+    { src: '@/plugins/vue-mavon-editor', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules

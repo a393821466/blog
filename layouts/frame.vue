@@ -54,7 +54,7 @@
                   <el-menu-item
                     v-for="(node, idx) in item.children"
                     :key="idx"
-                    :index="node.path + ''"
+                    :index="node.path"
                   >
                     {{ node.meta.title }}
                   </el-menu-item>
@@ -115,8 +115,8 @@ export default {
       levelList: '',
       defaultPath: '/admin/home',
       breadList: [],
-      breadArr: [],
-      allRouters: []
+      breadArr: []
+      // allRouters: []
     }
   },
   computed: {
@@ -144,7 +144,7 @@ export default {
     $route(to) {
       let getRoutePath = getSession('breadLocation')
       let arrPath = new Array(to.path)
-      this.handleSelect('', !getRoutePath ? arrPath : getRoutePath)
+      this.handleSelect(to.path, !getRoutePath ? arrPath : getRoutePath)
     }
   },
   mounted() {
@@ -157,14 +157,13 @@ export default {
     } else {
       this.tabHeight = dH
     }
-
-    this.handleSelect(
-      '',
-      !getRoutePath ? new Array(this.$route.path) : getRoutePath
-    )
-    if (this.allRouters.length == 0) {
-      this.allRouters = this.allRouters.concat(nodeList)
-    }
+    const normalRoute = !getRoutePath
+      ? new Array(this.defaultPath)
+      : getRoutePath
+    this.handleSelect(normalRoute[normalRoute.length - 1], normalRoute)
+    // if (this.allRouters.length == 0) {
+    //   this.allRouters = this.allRouters.concat(nodeList)
+    // }
   },
   methods: {
     ...mapActions({
@@ -182,8 +181,8 @@ export default {
             .logout()
             .then(res => {
               if (res.status) {
+                window.location.replace('/logsin')
                 clearALLsession()
-                that.$router.push('/logsin')
               }
             })
             .catch(err => {
@@ -198,7 +197,7 @@ export default {
       if (!item.children) {
         return
       }
-      this.defaultPath = item.children[0].path
+      this.handleSelect(item.path, new Array(item.path, item.path))
     },
     handChange() {
       this.$emit('hand-change', this.breadcrumbList)
@@ -206,6 +205,7 @@ export default {
     handleSelect(key, indexPath) {
       setSession('breadLocation', indexPath)
       this.breadList = indexPath
+      this.defaultPath = key
       // this.breadArr = []
       // this.allRouters.forEach(item => {
       //   if (item.meta.list.indexOf(key) > -1) {

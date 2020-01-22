@@ -1,7 +1,7 @@
 const query = require('./connect').do
 // 添加文章
 exports.addArticle = value => {
-  let _sql = `insert into blog_article(title,menuId,autor,summary,status,hot,showHome,image,viewerNum,content,create_time) values(?,?,?,?,?,?,?,?,?,?,?)`
+  let _sql = `insert into blog_article(title,menuId,autor,summary,status,hot,showHome,image,viewerNum,content,markContent,create_time) values(?,?,?,?,?,?,?,?,?,?,?,?)`
   return query(_sql, value)
 }
 // 查找文章
@@ -50,7 +50,7 @@ exports.singleArticle = value => {
 
 // 更新文章
 exports.updateArticle = value => {
-  let _sql = `update blog_article set title=?, menuId=?,summary=?,status=?,hot=?,showHome=?,image=?,content=? where id=?`
+  let _sql = `update blog_article set title=?, menuId=?,summary=?,status=?,hot=?,showHome=?,image=?,content=?,markContent=? where id=?`
   return query(_sql, value)
 }
 

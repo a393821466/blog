@@ -25,6 +25,7 @@ class articleController {
         image: query.imageUrl,
         viewerNum: query.viewerNum,
         content: query.content,
+        markContent: query.markContent,
         create_time: Date.now()
       }
       let list = []
@@ -56,6 +57,7 @@ class articleController {
         data.image,
         data.viewerNum,
         data.content,
+        data.markContent,
         data.create_time
       ])
       if (!add) {
@@ -149,7 +151,8 @@ class articleController {
         hot: !query.hot ? '' : query.hot * 1,
         showHome: !query.banner ? '' : query.banner * 1,
         image: query.imageUrl,
-        content: query.content
+        content: query.content,
+        markContent: query.markContent
       }
       let list = []
       if (!id) {
@@ -176,7 +179,8 @@ class articleController {
         data.hot,
         data.showHome,
         data.image,
-        data.content
+        data.content,
+        data.markContent
       ])
       if (!editArticle) {
         ctx.error(500, '更改失败')

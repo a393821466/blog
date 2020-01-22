@@ -13,7 +13,8 @@ export default {
     add: `${api}/addMenu`,
     get: `${api}/getMenu`,
     update: `${api}/updateMenu`,
-    del: `${api}/delMenu`
+    del: `${api}/delMenu`,
+    like: `${api}/likeMenu`
   },
   // 文章的增删改查
   article: {

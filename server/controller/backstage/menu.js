@@ -100,6 +100,32 @@ class menuController {
       throw new Error(e)
     }
   }
+  // 模糊查询菜单
+  static async likeFindMenu(ctx) {
+    const query = ctx.query
+    try {
+      let das = {
+        masterMenu: !query.masterMenu ? '' : query.masterMenu,
+        type: !query.type || query.type == 'all' ? '' : query.type,
+        url: !query.url ? '' : query.url
+      }
+      const findLikeMenu = await menuService.doFindLikeMenu(
+        das.masterMenu,
+        das.type,
+        das.url
+      )
+      if (!findLikeMenu) {
+        ctx.error(500, '服务器繁忙,请稍后再试')
+      }
+      ctx.body = {
+        code: 200,
+        status: true,
+        value: findLikeMenu
+      }
+    } catch (e) {
+      throw new Error(e)
+    }
+  }
   // 修改菜单
   static async changeMenu(ctx) {
     try {

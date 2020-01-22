@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2020 年 01 月 21 日 16:55
+-- 生成日期: 2020 年 01 月 22 日 19:04
 -- 服务器版本: 5.5.53
 -- PHP 版本: 5.4.45
 
@@ -38,23 +38,18 @@ CREATE TABLE IF NOT EXISTS `blog_article` (
   `image` text NOT NULL COMMENT '图片',
   `viewerNum` bigint(20) DEFAULT NULL COMMENT '浏览人数',
   `content` text NOT NULL COMMENT '文章内容',
+  `markContent` text COMMENT 'markdown内容',
   `create_time` bigint(20) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='文章' AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='文章' AUTO_INCREMENT=22 ;
 
 --
 -- 转存表中的数据 `blog_article`
 --
 
-INSERT INTO `blog_article` (`id`, `title`, `menuId`, `autor`, `summary`, `status`, `hot`, `showHome`, `image`, `viewerNum`, `content`, `create_time`) VALUES
-(10, 'VSCode常用插件和技巧教程', 3, 'Maple', '想写这个文章已经很久了，但是一直觉的需要的人可能会很少，毕竟VSCode这种每天都使用IDE工具，基本在1小时内就可以快速上手，但是通过我对身边同事的观察，我发现还是有很多小伙伴使用不够精通。特别是现在越来越多的插件，有的非常好用，直接可以提高我们的开发效率，那从今天开始，我开始更新VSCode的一些插件和技巧，这个并不是定期更新，而是我有了好的素材就会更新。', 1, 2, 2, 'http://localhost:3000/public/uploads/summary/2020/1579373002136110.jpg', 124, '<p>想写这个文章已经很久了，但是一直觉的需要的人可能会很少，毕竟VSCode这种每天都使用IDE工具，基本在1小时内就可以快速上手，但是通过我对身边同事的观察，我发现还是有很多小伙伴使用不够精通。特别是现在越来越多的插件，有的非常好用，直接可以提高我们的开发效率，那从今天开始，我开始更新VSCode的一些插件和技巧，这个并不是定期更新，而是我有了好的素材就会更新。</p><p><img src="http://localhost:3000/public/uploads/content/2020/1579581336967626.jpeg" style="max-width:100%;"><br></p>', 1579373061607),
-(11, 'Taro多端统一框架基础免费教程', 3, 'Maple', '2020年第2天，开始继续出视频，录视频。有要一起学习的小伙伴吗?\n随着微信小程序越来越火，其它平台也都推出了自己的小程序产品（支付宝、快应用、百度、抖音）。小程序最大的特点就是平台能为你提供强大的流量，所以小程序开发变成了前端必会知识。 作为一个从来不想写程序，一心只想泡妹子的程序员，我一直期盼有一种解决方案，可以一次开发，多端运行。这也就是我的学习理念，每多学一点知识，就少些一些代码。', 1, 2, 2, 'http://localhost:3000/public/uploads/summary/2020/157937317094556.jpg', 124, '<p>2020年第2天，开始继续出视频，录视频。有要一起学习的小伙伴吗?<br>随着微信小程序越来越火，其它平台也都推出了自己的小程序产品（支付宝、快应用、百度、抖音）。小程序最大的特点就是平台能为你提供强大的流量，所以小程序开发变成了前端必会知识。 作为一个从来不想写程序，一心只想泡妹子的程序员，我一直期盼有一种解决方案，可以一次开发，多端运行。这也就是我的学习理念，每多学一点知识，就少些一些代码。</p>', 1579373296649),
-(12, 'Taro多端统一框架基础免费教程', 3, 'Maple', '随着微信小程序越来越火，其它平台也都推出了自己的小程序产品（支付宝、快应用、百度、抖音）。小程序最大的特点就是平台能为你提供强大的流量，所以小程序开发变成了前端必会知识。  作为一个从来不想写程序，一心只想泡妹子的程序员，我一直期盼有一种解决方案，可以一次开发，多端运行。这也就是我的学习理念，每多学一点知识，就少些一些代码。期间我尝试Flutter、尝试uni-app、直到我遇到了Taro，我感觉', 1, 2, 2, 'http://localhost:3000/public/uploads/summary/2020/1579373840876973.jpg', 10, '<h3><span style="font-weight: normal;"></span>自我介绍和课程特点</h3><p>第一课按惯例要作一个自我介绍，我目前专注于前端开发，每年都会出100集左右的免费视频，目标是10年出1000集免费视频。目前我已经出免费视频500多集，每周大概会有3集左右的视频更新。所以如果你想跟着技术胖持续学习，请记住<code>https://jspang.com</code>这个网站。</p><p>课程中全部代码都是手敲，逐行讲解，防止你听的一脸懵逼。</p><p>本教程每周更新三集，所以建议你收藏。</p><p>当然我也希望你能加入小密圈，如果学习Taro框架遇到什么困难，可以在小密圈向技术胖进行提问。 也算是对技术胖的一种支持吧。</p>', 1579373856521),
-(13, '啦啦', 0, 'Maple', 'dsads', 1, 2, 2, 'http://localhost:3000/public/uploads/summary/2020/1579451236773729.jpg', 10, '<p>asdas</p>', 1579451241693),
-(14, '我爱你啊啊啊', 0, 'Maple', '大三大四的', 1, 2, 2, 'http://localhost:3000/public/uploads/summary/2020/1579451305485282.jpg', 10, '<p>达萨达萨的</p><p><img src="http://localhost:3000/public/uploads/content/2020/1579451315729264.jpg" style="max-width:100%;"><br></p>', 1579451319369),
-(15, '啦啦啦', 3, 'Maple', '', 1, 2, 2, 'http://localhost:3000/public/uploads/summary/2020/1579451342961438.jpg', 10, '<p>sadaas</p>', 1579451347313),
-(16, '新文章', 4, 'Maple', '啦啦啦啦', 2, 1, 1, 'http://localhost:3000/public/uploads/summary/2020/1579460161678103.jpg', 10, '<p>啦啦啦啦</p>', 1579460170013),
-(17, '啦啦', 4, 'Maple', 'adas', 1, 2, 2, '', 10, '<p>asdas</p>', 1579460457170);
+INSERT INTO `blog_article` (`id`, `title`, `menuId`, `autor`, `summary`, `status`, `hot`, `showHome`, `image`, `viewerNum`, `content`, `markContent`, `create_time`) VALUES
+(20, '测试新文章编写', 0, 'Maple', '测试', 1, 2, 2, 'http://localhost:3000/public/uploads/summary/2020/1579672507730790.jpeg', 10, '<p>测试啊啊啊</p>\n<pre><div class="hljs"><code class="lang-javascript"><span class="hljs-keyword">var</span> a=<span class="hljs-number">0</span>;\n<span class="hljs-keyword">var</span> b=<span class="hljs-number">1</span>;\n<span class="hljs-built_in">console</span>.log(a+b)\n</code></div></pre>\n<p><img src="http://localhost:3000/public/uploads/content/2020/1579664933927755.jpeg" alt="flutterreview.jpeg" /></p>\n', '测试啊啊啊\n```javascript\nvar a=0;\nvar b=1;\nconsole.log(a+b)\n```\n![flutterreview.jpeg](http://localhost:3000/public/uploads/content/2020/1579664933927755.jpeg)', 1579664937172),
+(21, '测试二', 3, 'Maple', '测试啦啦啦', 1, 2, 2, 'http://localhost:3000/public/uploads/summary/2020/1579673475563767.jpeg', 10, '<p>** 为什么选择快餐店POS系统？ **</p>\n<p>刚开始我想作一套以酒水商城为背景的手机端应用，但是我发现网上这样的应用太多了，什么仿饿了么，什么知乎，什么购物车都可以在网上找到，所以你完全可以Github网站中下载，自学掌握。我觉的既然作了这个实战，就要够酷够复杂，我下面列举了三个原因，大家可以看一下（你其实可以忽略前两点）。</p>\n<p>这个收银界面足够复杂：我们采用三栏布局，每栏的交互操作都很有技术技巧，让你快速掌握复杂应用的开发。<br />\n用到的知识点多：用到实战中90%以上的知识点，让你把Vue的知识串联起来，快速成为单位中的技术牛人。<br />\n为了更好的和女神啪啪啪：京东-强东哥的女神愿望就是开奶茶店，我的女神愿望就是开个快餐店。<br />\nMockPlus软件下载：</p>\n<p>Mockplus是一款免费的软件，你可以随便下载：https://www.mockplus.cn/ 。下载好后你需要注册一个账户，就可以正常使用了。</p>\n<p>下面是我们用Mockplus制作的应用框线图，虽然简单，但是已经把我脑海中快餐店Pos系统的大体样式画出来了。在作项目之前，一定要画出框线图，反复讨论需求和技术实现，这样能避免开发中的大范围修改，在实际工作当中非常重要。</p>\n<p>源码：<a href="https://coding.net/u/shenghongyu/p/fabric.js-Demo/git" target="_blank">https://coding.net/u/shenghongyu/p/fabric.js-Demo/git</a></p>\n<h2><a id="2Vuecli_15"></a>第2节：Vue-cli搭建开发环境</h2>\n<p>我们采用Vue-cli进行快速搭建，如果你对Vue-cli还不了解，请观看下面的文章，大概30分钟可完全掌握Vue-cli。</p>\n<iframe \n    height=450 \n    width=800 \n    src="//player.bilibili.com/player.html?aid=48860539&cid=85564154&page=3" \n    frameborder=0 \n    allowfullscreen>\n</iframe>\n<h3><a id="_27"></a>搭建项目架构：</h3>\n<p>项目采用Webpack+Vue-router的架构方式，开始安装（全部在windows系统上操作，我也没有mac电脑）。 1.按Win+R，然后在文本框中输入cmd，回车打开命令行，输入vue-cli安装命令：</p>\n<pre><div class="hljs"><code class="lang-javascript">mpm install vue-cli -g\n</code></div></pre>\n', '** 为什么选择快餐店POS系统？ **\n\n刚开始我想作一套以酒水商城为背景的手机端应用，但是我发现网上这样的应用太多了，什么仿饿了么，什么知乎，什么购物车都可以在网上找到，所以你完全可以Github网站中下载，自学掌握。我觉的既然作了这个实战，就要够酷够复杂，我下面列举了三个原因，大家可以看一下（你其实可以忽略前两点）。\n\n这个收银界面足够复杂：我们采用三栏布局，每栏的交互操作都很有技术技巧，让你快速掌握复杂应用的开发。\n用到的知识点多：用到实战中90%以上的知识点，让你把Vue的知识串联起来，快速成为单位中的技术牛人。\n为了更好的和女神啪啪啪：京东-强东哥的女神愿望就是开奶茶店，我的女神愿望就是开个快餐店。\nMockPlus软件下载：\n\nMockplus是一款免费的软件，你可以随便下载：https://www.mockplus.cn/ 。下载好后你需要注册一个账户，就可以正常使用了。\n\n下面是我们用Mockplus制作的应用框线图，虽然简单，但是已经把我脑海中快餐店Pos系统的大体样式画出来了。在作项目之前，一定要画出框线图，反复讨论需求和技术实现，这样能避免开发中的大范围修改，在实际工作当中非常重要。\n\n源码：[https://coding.net/u/shenghongyu/p/fabric.js-Demo/git](https://coding.net/u/shenghongyu/p/fabric.js-Demo/git)\n\n## 第2节：Vue-cli搭建开发环境\n\n我们采用Vue-cli进行快速搭建，如果你对Vue-cli还不了解，请观看下面的文章，大概30分钟可完全掌握Vue-cli。\n\n<iframe \n    height=450 \n    width=800 \n    src="//player.bilibili.com/player.html?aid=48860539&cid=85564154&page=3" \n    frameborder=0 \n    allowfullscreen>\n</iframe>\n\n### 搭建项目架构：\n项目采用Webpack+Vue-router的架构方式，开始安装（全部在windows系统上操作，我也没有mac电脑）。 1.按Win+R，然后在文本框中输入cmd，回车打开命令行，输入vue-cli安装命令：\n\n```javascript\nmpm install vue-cli -g\n```\n', 1579673798391);
 
 -- --------------------------------------------------------
 
@@ -81,8 +76,8 @@ CREATE TABLE IF NOT EXISTS `blog_menu` (
 --
 
 INSERT INTO `blog_menu` (`id`, `masterMenu`, `subMenu`, `type`, `url`, `masterId`, `sort`, `description`, `icon`, `create_time`) VALUES
-(1, '首页', 'home', 1, '', 0, 100, '这家伙很懒,什么都没写。', '', 1579023588457),
-(2, '分类', 'menu', 1, '', 0, 100, '这家伙很懒,什么都没写。', '', 1579023732195),
+(1, '首页', '首页', 1, '', 0, 100, '这家伙很懒,什么都没写。', '', 1579023588457),
+(2, '分类', '分类', 1, '', 0, 100, '这家伙很懒,什么都没写。', '', 1579023732195),
 (3, '分类', '技术文章', 2, '', 2, 100, '这家伙很懒,什么都没写。', '', 1579024337537),
 (4, '分类', '学习笔记', 2, '', 2, 100, '这家伙很懒,什么都没写。', '', 1579024393871);
 

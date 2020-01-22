@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
-// import Qs from 'qs'
+import Qs from 'qs'
 import address from '../utils/address.config'
 import { setSession } from '@/utils/storage'
 // Store state
 export const state = () => ({
-  menuList: []
+  menuList: [],
+  allMenu: []
 })
 
 // STORE ACTION
@@ -17,15 +18,25 @@ export const actions = {
       commit('GET_MENULIST', ret.value)
     }
     return ret
+  },
+  // LIKEMENU
+  async likeGet({ commit }, value) {
+    let val = Qs.stringify(value)
+    let ret = await axios.get(`${address.menu.like}?${val}`)
+    if (ret.status) {
+      commit('GET_ALLMENULIST', ret.value)
+    }
+    return ret
   }
 }
 
 // STORE MUTATION
 export const mutations = {
+  // FILEMENU
   GET_MENULIST(state, val) {
     if (val.length > 0) {
       let fileMenu = val.filter(item => {
-        return item.subMenu == 'menu'
+        return item.subMenu == '分类'
       })
       let das = [
         {
@@ -38,10 +49,15 @@ export const mutations = {
         state.menuList = das
       }
     }
+  },
+  // GETALLMENU
+  GET_ALLMENULIST(state, val) {
+    state.allMenu = val
   }
 }
 
 // STORE GETTERS
 export const getters = {
-  menuList: state => state.menuList
+  menuList: state => state.menuList,
+  allMenu: state => state.allMenu
 }

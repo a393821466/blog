@@ -1,5 +1,5 @@
 const menuModel = require('../../models/menu')
-
+const utils = require('../../utils')
 class menuService {
   // 添加菜单
   static async doAddMenu(value) {
@@ -9,7 +9,6 @@ class menuService {
   // 修改菜单
   static async doUpdateMenu(id, value) {
     const arr = value.concat(id)
-    console.log(arr)
     const updateMenu = await menuModel.updateMenu(arr)
     return updateMenu
   }
@@ -17,6 +16,17 @@ class menuService {
   static async doFindOneMenu(n, value) {
     const findMenu = await menuModel.getMenu(n, value)
     return findMenu
+  }
+  // 模糊查询菜单
+  static async doFindLikeMenu(val1, val2, val3) {
+    const findLikeMenu = await menuModel.getLikeMenuUrl(val1, val2, val3)
+    let getMenus
+    if (!val1 && !val2 && !val3) {
+      getMenus = utils.formartMenu(findLikeMenu)
+    } else {
+      getMenus = findLikeMenu
+    }
+    return getMenus
   }
   // 删除菜单
   static async doDeleteMenu(id) {

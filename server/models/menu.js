@@ -29,6 +29,29 @@ exports.getMenu = (n, value) => {
   return query(_sql, value)
 }
 
+// 模糊查找菜单
+exports.getLikeMenuUrl = (val1, val2, val3) => {
+  let _sql = `select m.* from blog_menu m where 1=1 `
+  let arr = []
+  if (val1 !== '') {
+    val1 = '%' + val1 + '%'
+    _sql += `and m.masterMenu like ?`
+    arr.push(val1)
+  }
+  if (val2 !== '') {
+    val2 = '%' + val2 + '%'
+    _sql += `and m.type like ?`
+    arr.push(val2)
+  }
+  if (val3 !== '') {
+    val3 = '%' + val3 + '%'
+    _sql += `and m.url like ?`
+    arr.push(val3)
+  }
+  _sql += `ORDER BY m.sort desc`
+  return query(_sql, arr)
+}
+
 // 查找菜单url
 exports.getMenuUrl = value => {
   let _sql = `select * from blog_menu where url=?`

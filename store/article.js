@@ -34,6 +34,11 @@ export const actions = {
     const val = Qs.stringify(value)
     let ret = await axios.delete(`${address.article.del}?${val}`)
     return ret
+  },
+  // UPLOADIMG
+  async uploadImg({ commit }, value) {
+    let ret = await axios.post(address.upload.content, value)
+    return ret
   }
 }
 
