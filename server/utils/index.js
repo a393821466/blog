@@ -51,9 +51,7 @@ const utils = {
   formartMenu(menu) {
     menu.forEach(ele => {
       let parentId = ele.masterId
-      if (parentId === 0) {
-        console.log('menu')
-      } else {
+      if (parentId !== 0) {
         menu.forEach(d => {
           if (d.id === parentId) {
             let childArray = d.children

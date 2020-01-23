@@ -2,13 +2,13 @@ const query = require('./connect').do
 
 // 添加菜单
 exports.addMenu = value => {
-  let _sql = `insert into blog_menu(masterMenu,subMenu,type,url,masterId,sort,description,icon,create_time) values(?,?,?,?,?,?,?,?,?)`
+  let _sql = `insert into blog_menu(masterMenu,subMenu,type,url,masterId,sort,description,icon,isMenu,create_time) values(?,?,?,?,?,?,?,?,?,?)`
   return query(_sql, value)
 }
 
 // 更新菜单
 exports.updateMenu = value => {
-  let _sql = `update blog_menu set masterMenu=?, subMenu=?,url=?,sort=?,description=?,icon=? where id=?`
+  let _sql = `update blog_menu set subMenu=?,url=?,sort=?,description=?,icon=? where id=?`
   return query(_sql, value)
 }
 
@@ -23,9 +23,17 @@ exports.getMenu = (n, value) => {
     _sql = `select * from blog_menu where masterMenu=?`
   } else if (n === 3) {
     _sql = `select * from blog_menu where subMenu=?`
-  } else {
+  } else if (n === 4) {
     _sql = `select * from blog_menu where masterId=?`
+  } else {
+    _sql = `select * from blog_menu where isMenu=?`
   }
+  return query(_sql, value)
+}
+
+// 查找是否菜单
+exports.getIsMenu = value => {
+  let _sql = `select * from blog_menu where isMenu=?`
   return query(_sql, value)
 }
 
@@ -35,7 +43,7 @@ exports.getLikeMenuUrl = (val1, val2, val3) => {
   let arr = []
   if (val1 !== '') {
     val1 = '%' + val1 + '%'
-    _sql += `and m.masterMenu like ?`
+    _sql += `and m.subMenu like ?`
     arr.push(val1)
   }
   if (val2 !== '') {

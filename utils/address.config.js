@@ -14,7 +14,8 @@ export default {
     get: `${api}/getMenu`,
     update: `${api}/updateMenu`,
     del: `${api}/delMenu`,
-    like: `${api}/likeMenu`
+    like: `${api}/likeMenu`,
+    isMenu: `${api}/getIsMenu`
   },
   // 文章的增删改查
   article: {

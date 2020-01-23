@@ -3,12 +3,12 @@
     <div class="table-search">
       <el-form ref="form" :inline="true" class="searchView">
         <div class="searchInput s">
-          <el-form-item label="模块名称">
+          <el-form-item label="菜单名称">
             <el-input
-              v-model="ruleValue.masterMenu"
+              v-model="ruleValue.subMenu"
               type="text"
               class="filter-item"
-              placeholder="请输入模块名称"
+              placeholder="请输入菜单名称"
             />
           </el-form-item>
           <el-form-item label="菜单URL">
@@ -87,7 +87,11 @@
                 >
                   修改
                 </el-button>
-                <el-button type="text" size="small" @click="delMenu(scope.row)">
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="delMenuAction(scope.row)"
+                >
                   删除
                 </el-button>
               </template>
@@ -113,7 +117,7 @@ export default {
   data() {
     return {
       ruleValue: {
-        masterMenu: '',
+        subMenu: '',
         type: 'all',
         url: ''
       },
@@ -153,7 +157,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      getMenuList: 'menu/likeGet'
+      getMenuList: 'menu/likeGet',
+      delMenu: 'menu/del'
     }),
     // 搜索菜单
     menuSearch() {
@@ -176,11 +181,37 @@ export default {
     },
     // 修改菜单
     handleClick(row) {
-      console.log(row)
+      this.dialogData.flat = true
+      this.dialogData.value = row
+      this.dialogData.type = 'update'
     },
     // 删除菜单
-    delMenu(row) {
-      console.log(row)
+    delMenuAction(row) {
+      const that = this
+      this.$confirm(`您确定要删除标题:(${row.subMenu})菜单？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          that.listLoading = true
+          that
+            .delMenu({ id: row.id })
+            .then(res => {
+              that.listLoading = false
+              if (res.status) {
+                that.getAllMenu()
+                that.$message.success('删除成功')
+              }
+            })
+            .catch(err => {
+              this.listLoading = false
+              that.$message.error(err)
+            })
+        })
+        .catch(() => {
+          console.log('取消删除')
+        })
     },
     // 获取菜单列表
     getAllMenu(query) {

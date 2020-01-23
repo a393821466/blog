@@ -9,9 +9,10 @@
       <el-form ref="ruleForm" :model="ruleVlue">
         <el-form-item label="类型" :label-width="formLabelWidth" prop="menu">
           <el-select
-            v-model="ruleVlue.menus"
+            v-model="ruleVlue.type"
             placeholder="请选择"
-            @change="hanldSelect(ruleVlue.menus)"
+            :disabled="dialogType == 'update'"
+            @change="hanldSelect(ruleVlue.type)"
           >
             <el-option
               v-for="item in getMenu"
@@ -30,6 +31,7 @@
           <el-input
             v-model="ruleVlue.masterMenu"
             auto-complete="off"
+            :disabled="dialogType == 'update'"
             placeholder="输入模块名称..."
           />
         </el-form-item>
@@ -50,6 +52,35 @@
             auto-complete="off"
             placeholder="输入URL地址..."
           />
+        </el-form-item>
+        <el-form-item
+          label="选择模块"
+          :label-width="formLabelWidth"
+          prop="masterId"
+        >
+          <el-select v-model="ruleVlue.masterId" placeholder="请选择">
+            <el-option
+              v-for="item in getModuleMenu"
+              :key="item.id"
+              :label="item.masterMenu"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          v-show="menuType == 1"
+          label="是否菜单"
+          :label-width="formLabelWidth"
+        >
+          <el-radio
+            v-for="(item, idx) in isMenu"
+            :key="idx"
+            v-model="ruleVlue.isMenu"
+            :label="item.id"
+            :disabled="dialogType == 'update'"
+          >
+            {{ item.value }}
+          </el-radio>
         </el-form-item>
         <el-form-item label="排序" :label-width="formLabelWidth" prop="sort">
           <el-input
@@ -84,6 +115,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'AddMenu',
   props: {
@@ -96,14 +128,17 @@ export default {
     return {
       formLabelWidth: '80px',
       dialogTitle: '-',
+      dialogType: '',
       menuType: 1,
       ruleVlue: {
         masterMenu: '',
         subMenu: '',
-        menus: 1,
+        type: 1,
         url: '',
         sort: 100,
+        masterId: 0,
         description: '',
+        isMenu: 2,
         icon: ''
       },
       getMenu: [
@@ -116,21 +151,69 @@ export default {
           value: '菜单'
         }
       ],
+      isMenu: [
+        {
+          id: 1,
+          value: '是'
+        },
+        {
+          id: 2,
+          value: '否'
+        }
+      ],
       loading: false
     }
+  },
+  computed: {
+    ...mapGetters({
+      getModuleMenu: 'menu/moduleMenu'
+    })
   },
   watch: {
     menuDialog: {
       handler(n) {
         this.dialogTitle = n.type == 'add' ? '添加路由' : '修改路由'
+        this.dialogType = n.type
         if (n.type == 'update') {
-          console.log('修改')
+          this.ruleVlue.id = n.value.id
+          this.ruleVlue.masterMenu = n.value.masterMenu
+          this.ruleVlue.subMenu = n.value.subMenu
+          this.ruleVlue.type = n.value.type
+          this.ruleVlue.url = n.value.url
+          this.ruleVlue.sort = n.value.sort
+          this.ruleVlue.masterId = n.value.masterId
+          this.ruleVlue.description = n.value.description
+          this.ruleVlue.icon = n.value.icon
+          this.menuType = n.value.type
+        } else {
+          this.clearInput()
+        }
+        if (n && this.getModuleMenu.length <= 0) {
+          this.getMenuList()
         }
       },
       deep: true
     }
   },
   methods: {
+    ...mapActions({
+      getMenuList: 'menu/getIsMenu',
+      addMenu: 'menu/add',
+      updateMenu: 'menu/update',
+      getlikeMenu: 'menu/likeGet'
+    }),
+    // 复位
+    clearInput() {
+      this.ruleVlue.masterMenu = ''
+      this.ruleVlue.subMenu = ''
+      this.ruleVlue.type = 1
+      this.ruleVlue.url = ''
+      this.ruleVlue.sort = 100
+      this.ruleVlue.masterId = 0
+      this.ruleVlue.description = ''
+      this.ruleVlue.isMenu = 2
+      this.ruleVlue.icon = ''
+    },
     // 关闭对话框
     handleClose() {
       this.$emit('closeMenuDialog', false)
@@ -139,8 +222,65 @@ export default {
     hanldSelect(e) {
       this.menuType = e
     },
+    // 提交
     onConfirm() {
-      console.log('提交')
+      if (this.ruleVlue.masterId === '') {
+        this.$message.error('模块还未选择')
+        return
+      }
+      this.sendRequest(this.ruleVlue)
+    },
+    // 发送请求
+    sendRequest(query) {
+      const that = this
+      this.loading = true
+      if (this.menuDialog.type == 'add') {
+        that
+          .addMenu(query)
+          .then(res => {
+            if (res.status) {
+              that.$message.success('添加成功')
+              that.loading = false
+              that.clearInput()
+              that.handleClose()
+              that.getAllMenu()
+            }
+          })
+          .catch(err => {
+            that.loading = false
+            that.$message.error(err)
+          })
+      } else {
+        that
+          .updateMenu(query)
+          .then(res => {
+            if (res.status) {
+              that.$message.success('更新成功')
+              that.loading = false
+              that.handleClose()
+              that.getAllMenu()
+            }
+          })
+          .catch(err => {
+            that.loading = false
+            that.$message.error(err)
+          })
+      }
+    },
+    // 获取菜单列表
+    getAllMenu(query) {
+      this.listLoading = true
+      this.getlikeMenu(query)
+        .then(res => {
+          this.listLoading = false
+          if (!res.status) {
+            this.$message.error(res.msg)
+          }
+        })
+        .catch(err => {
+          this.listLoading = false
+          this.$message.error(err)
+        })
     }
   }
 }

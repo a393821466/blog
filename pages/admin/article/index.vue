@@ -363,6 +363,7 @@ export default {
             .delArticle({ id: row.id })
             .then(res => {
               that.listLoading = false
+              that.$message.success('删除成功')
               that.getArticleList({ page: this.page, pageSize: this.pageSize })
               if (!res.status) {
                 that.$message.error(res.msg)

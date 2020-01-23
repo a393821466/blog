@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2020 年 01 月 22 日 19:04
+-- 生成日期: 2020 年 01 月 23 日 17:10
 -- 服务器版本: 5.5.53
 -- PHP 版本: 5.4.45
 
@@ -67,19 +67,20 @@ CREATE TABLE IF NOT EXISTS `blog_menu` (
   `sort` int(11) DEFAULT NULL COMMENT '排序',
   `description` varchar(255) DEFAULT NULL COMMENT '详情',
   `icon` varchar(100) DEFAULT NULL COMMENT '图标',
+  `isMenu` int(11) NOT NULL DEFAULT '2' COMMENT '是否菜单',
   `create_time` bigint(20) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='菜单' AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='菜单' AUTO_INCREMENT=9 ;
 
 --
 -- 转存表中的数据 `blog_menu`
 --
 
-INSERT INTO `blog_menu` (`id`, `masterMenu`, `subMenu`, `type`, `url`, `masterId`, `sort`, `description`, `icon`, `create_time`) VALUES
-(1, '首页', '首页', 1, '', 0, 100, '这家伙很懒,什么都没写。', '', 1579023588457),
-(2, '分类', '分类', 1, '', 0, 100, '这家伙很懒,什么都没写。', '', 1579023732195),
-(3, '分类', '技术文章', 2, '', 2, 100, '这家伙很懒,什么都没写。', '', 1579024337537),
-(4, '分类', '学习笔记', 2, '', 2, 100, '这家伙很懒,什么都没写。', '', 1579024393871);
+INSERT INTO `blog_menu` (`id`, `masterMenu`, `subMenu`, `type`, `url`, `masterId`, `sort`, `description`, `icon`, `isMenu`, `create_time`) VALUES
+(1, '首页', '首页', 1, '/home', 0, 100, '这家伙很懒,什么都没写。', '', 2, 1579023588457),
+(2, '分类', '分类', 1, '', 0, 100, '这家伙很懒,什么都没写。', '', 1, 1579023732195),
+(3, '分类', '技术文章', 2, '', 2, 100, '这家伙很懒,什么都没写。', '', 2, 1579024337537),
+(4, '分类', '学习笔记', 2, '', 2, 100, '这家伙很懒,什么都没写。', '', 2, 1579024393871);
 
 -- --------------------------------------------------------
 

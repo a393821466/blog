@@ -24,6 +24,8 @@ backStageRouter.get('/userInfo', checkToken, user.getUserInfo)
 backStageRouter.post('/addMenu', checkToken, menu.addMenu)
 // 查询菜单
 backStageRouter.get('/getMenu', checkToken, menu.findMenu)
+// 根据module查询菜单
+backStageRouter.get('/getIsMenu', checkToken, menu.findIsMenu)
 // 模糊查询菜单
 backStageRouter.get('/likeMenu', checkToken, menu.likeFindMenu)
 // 修改菜单

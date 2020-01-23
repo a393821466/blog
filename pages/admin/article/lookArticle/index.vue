@@ -1,5 +1,5 @@
 <template>
-  <div class="dialogArticle">
+  <div class="lookArticle">
     <el-dialog
       ref="lookArticle"
       title="文章内容"
@@ -54,7 +54,7 @@ export default {
 </script>
 
 <style lang="scss">
-.dialogArticle {
+.lookArticle {
   .markdown-body pre {
     padding: 0;
   }
