@@ -54,6 +54,18 @@ exports.updateArticle = value => {
   return query(_sql, value)
 }
 
+// 文章点赞
+exports.updataLike = value => {
+  let _sql = `update blog_article set like=? where id=?`
+  return query(_sql, value)
+}
+
+// 文章访问量
+exports.uploadViewerNew = value => {
+  let _sql = `update blog_article set viewerNum=? where id=?`
+  return query(_sql, value)
+}
+
 // 删除文章
 exports.delArticle = value => {
   let _sql = `delete from blog_article where id=?`

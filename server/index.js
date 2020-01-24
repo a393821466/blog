@@ -5,6 +5,7 @@ const session = require('koa-session')
 const errorMiddleware = require('./middleware/err_msg')
 const commonRouters = require('./routes/common.js')
 const backstageRouter = require('./routes/backstage')
+const frontEndRouter = require('./routes/frontEnd')
 const { Nuxt, Builder } = require('nuxt')
 
 const app = new Koa()
@@ -57,6 +58,7 @@ async function start() {
   // 路由处理
   app.use(commonRouters.routes()).use(commonRouters.allowedMethods())
   app.use(backstageRouter.routes()).use(backstageRouter.allowedMethods())
+  app.use(frontEndRouter.routes()).use(frontEndRouter.allowedMethods())
   app.use(ctx => {
     ctx.status = 200
     ctx.respond = false // Bypass Koa's built-in response handling

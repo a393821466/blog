@@ -265,7 +265,7 @@ export default {
     // eslint-disable-next-line vue/return-in-computed-property
     article() {
       if (this.articleList.data) {
-        return this.articleList.data
+        return this.articleList.totelSize > 0 ? this.articleList.data : []
       }
     },
     // eslint-disable-next-line vue/return-in-computed-property
@@ -283,7 +283,7 @@ export default {
     }
   },
   created() {
-    this.getMenuList()
+    this.getMenus()
     this.getArticleList({ page: this.page, pageSize: this.pageSize })
   },
   methods: {
@@ -321,6 +321,18 @@ export default {
     lookArticles(row) {
       this.lookArticleData.flat = true
       this.lookArticleData.value = row
+    },
+    // 获取菜单
+    getMenus() {
+      this.getMenuList()
+        .then(res => {
+          if (!res.status) {
+            this.$message.error(res.msg)
+          }
+        })
+        .catch(err => {
+          this.$message.error(err)
+        })
     },
     // 查找文章
     getArticleList(query) {
