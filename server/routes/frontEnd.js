@@ -6,8 +6,6 @@ const frontEndRouter = new Router({
 })
 // 发表评论
 frontEndRouter.post('/sendComment', frontEnd.sendCommentController)
-// 发表回复
-frontEndRouter.post('/sendReply', frontEnd.sendReplyController)
 // 查询评论
 frontEndRouter.get('/getComment', frontEnd.getCommentList)
 

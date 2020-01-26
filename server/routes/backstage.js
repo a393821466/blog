@@ -39,18 +39,18 @@ backStageRouter.post('/addSystem', checkToken, system.addSystem)
 // 获取系统信息
 backStageRouter.get('/getSystem', checkToken, system.getSystem)
 // 添加文章
-backStageRouter.post('/addArticle', article.addArticle)
+backStageRouter.post('/addArticle', checkToken, article.addArticle)
 // 查询文章
-backStageRouter.get('/getArticle', article.getArticleList)
+backStageRouter.get('/getArticle', checkToken, article.getArticleList)
 // 查询单篇文章
-backStageRouter.get('/getSingleArticle', article.getSingleArticle)
+backStageRouter.get('/getSingleArticle', checkToken, article.getSingleArticle)
 // 修改文章
-backStageRouter.put('/updateArticle', article.updateArticle)
+backStageRouter.put('/updateArticle', checkToken, article.updateArticle)
 // 删除文章
-backStageRouter.delete('/delArticle', article.delArticle)
+backStageRouter.delete('/delArticle', checkToken, article.delArticle)
 // 文章缩略图上传
-backStageRouter.post('/ueditor/thumbnail', article.uploadMiniImg)
+backStageRouter.post('/ueditor/thumbnail', checkToken, article.uploadMiniImg)
 // 文章ueditor图片上传
-backStageRouter.post('/ueditor/content', article.uplodContent)
+backStageRouter.post('/ueditor/content', checkToken, article.uplodContent)
 
 module.exports = backStageRouter
