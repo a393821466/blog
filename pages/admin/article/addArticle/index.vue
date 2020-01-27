@@ -54,6 +54,20 @@
           />
         </el-form-item>
         <el-form-item
+          label="开启评论"
+          :label-width="formLabelWidth"
+          prop="comment"
+        >
+          <el-select v-model="ruleVlue.is_comment" placeholder="是否轮播图">
+            <el-option
+              v-for="item in commentStatus"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
           label="轮播图"
           :label-width="formLabelWidth"
           prop="banner"
@@ -178,6 +192,7 @@ export default {
         banner: 2,
         menus: 0,
         viewerNum: 10,
+        is_comment: 1,
         summary: '',
         imageUrl: '',
         content: '',
@@ -193,6 +208,16 @@ export default {
         {
           value: 2,
           label: '异常'
+        }
+      ],
+      commentStatus: [
+        {
+          value: 1,
+          label: '开启'
+        },
+        {
+          value: 2,
+          label: '关闭'
         }
       ],
       bannerList: [
@@ -258,6 +283,7 @@ export default {
           this.ruleVlue.title = n.value.title
           this.ruleVlue.hot = n.value.hot
           this.ruleVlue.banner = n.value.showHome
+          this.ruleVlue.is_comment = n.value.is_comment
           this.ruleVlue.menus = n.value.menuId
           this.ruleVlue.status = n.value.status
           this.ruleVlue.summary = n.value.summary
@@ -349,6 +375,7 @@ export default {
       this.ruleVlue.title = ''
       this.ruleVlue.hot = 2
       this.ruleVlue.banner = 2
+      this.ruleVlue.is_comment = 1
       this.ruleVlue.menus = 0
       this.ruleVlue.status = 1
       this.ruleVlue.summary = ''

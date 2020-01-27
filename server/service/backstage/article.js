@@ -13,19 +13,29 @@ class articleService {
     return updateArticle
   }
   // 根据条件文章
-  static async doFindOneArticle(val1, val2, val3, val4, val5, page, size) {
+  static async doFindOneArticle(
+    val1,
+    val2,
+    val3,
+    val4,
+    val5,
+    val6,
+    page,
+    size
+  ) {
     const findArticle = await articleModel.getArticle(
       val1,
       val2,
       val3,
       val4,
       val5,
+      val6,
       page,
       size
     )
     let das
     let counts = 0
-    if (!val1 && !val2 && !val3 && !val4 && !val5) {
+    if (!val1 && !val2 && !val3 && !val4 && !val5 && !val6) {
       let pageCount = await articleModel.articleCount()
       counts = pageCount[0].count
     } else {

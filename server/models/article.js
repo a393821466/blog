@@ -1,11 +1,11 @@
 const query = require('./connect').do
 // 添加文章
 exports.addArticle = value => {
-  let _sql = `insert into blog_article(title,menuId,autor,summary,status,hot,showHome,image,viewerNum,content,markContent,create_time) values(?,?,?,?,?,?,?,?,?,?,?,?)`
+  let _sql = `insert into blog_article(title,menuId,autor,summary,status,hot,showHome,is_comment,image,viewerNum,content,markContent,create_time) values(?,?,?,?,?,?,?,?,?,?,?,?,?)`
   return query(_sql, value)
 }
 // 查找文章
-exports.getArticle = (val1, val2, val3, val4, val5, page, size) => {
+exports.getArticle = (val1, val2, val3, val4, val5, val6, page, size) => {
   let _sql = `select b.* from blog_article b where 1=1 `
   let arr = []
   if (val1 !== '') {
@@ -33,6 +33,11 @@ exports.getArticle = (val1, val2, val3, val4, val5, page, size) => {
     _sql += `and b.showHome like ?`
     arr.push(val5)
   }
+  if (val6 !== '') {
+    val6 = '%' + val6 + '%'
+    _sql += `and b.is_comment like ?`
+    arr.push(val6)
+  }
   _sql += `ORDER BY b.create_time desc limit ?,?`
   arr.push((page - 1) * size, size)
   return query(_sql, arr)
@@ -50,7 +55,7 @@ exports.singleArticle = value => {
 
 // 更新文章
 exports.updateArticle = value => {
-  let _sql = `update blog_article set title=?, menuId=?,summary=?,status=?,hot=?,showHome=?,image=?,content=?,markContent=? where id=?`
+  let _sql = `update blog_article set title=?, menuId=?,summary=?,status=?,hot=?,showHome=?,is_comment=?,image=?,content=?,markContent=? where id=?`
   return query(_sql, value)
 }
 

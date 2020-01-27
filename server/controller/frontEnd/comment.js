@@ -12,6 +12,7 @@ class commentController {
         comment_email: query.commentEmail,
         comment_text: query.commentText,
         reply_id: !query.replyId ? 0 : query.replyId * 1,
+        device: query.device,
         avatar: !query.avatar
           ? 'http://a0.att.hudong.com/16/12/01300535031999137270128786964.jpg'
           : query.avatar,
@@ -22,7 +23,8 @@ class commentController {
         !data.article_id ||
         !data.comment_name ||
         !data.comment_email ||
-        !data.comment_text
+        !data.comment_text ||
+        !data.device
       ) {
         ctx.error(400, '参数不正确')
       }
@@ -31,15 +33,15 @@ class commentController {
         ctx.error(500, '找不到评论的文章')
       }
       if (data.reply_id != 0) {
-        const getReply = await commentService.commentId(data.reply_id)
-        if (getReply.length == 0) {
-          ctx.error(500, '找不到回复对象')
+        const idAndArticleIds = await commentService.idAndArticleId([
+          data.reply_id,
+          data.article_id
+        ])
+        if (idAndArticleIds.length <= 0) {
+          ctx.error(500, '回复对象与文章不匹配')
         }
-        if (getReply[0].reply_id != 0) {
-          ctx.error(500, '回复对象错误')
-        }
-        if (getReply[0].article_id != getArticleId[0].article_id) {
-          ctx.error(500, '文章或回复对象不匹配')
+        if (idAndArticleIds[0].reply_id != 0) {
+          ctx.error(500, '回复对象不正确')
         }
       }
       let sendComment = await commentService.sendComment([
@@ -50,6 +52,7 @@ class commentController {
         data.comment_text,
         data.reply_id,
         data.avatar,
+        data.device,
         data.status,
         data.create_time
       ])
@@ -84,13 +87,13 @@ class commentController {
         das.page,
         das.pageSize
       )
-      findReplyCount.forEach(item => {
+      findReplyCount.value.forEach(item => {
         arrId.push(item.id)
       })
       const findComment = await commentService.findComment(das.acticleId)
       findComment.forEach(ele => {
         let parentId = ele.reply_id
-        if (parentId !== 0) {
+        if (parentId !== 0 && ele.status == 1) {
           findComment.forEach(d => {
             if (d.id === parentId) {
               let childArray = d.children
@@ -99,23 +102,33 @@ class commentController {
               }
               childArray.push(ele)
               d.children = childArray
+              d.children.sort((a, b) => {
+                if (a.create_time < b.create_time) {
+                  return -1
+                } else if (a.create_time > b.create_time) {
+                  return 1
+                } else {
+                  return 0
+                }
+              })
             }
           })
         }
       })
-      const f = findComment.filter(ele => ele.reply_id === 0)
+      const f = findComment.filter(ele => ele.reply_id === 0 && ele.status == 1)
       let list = []
       f.forEach(items => {
         if (arrId.indexOf(items.id) > -1) {
           list.push(items)
         }
       })
+      const count = findReplyCount.total
       ctx.body = {
         value: list,
-        page: das.page,
-        pageSize: das.pageSize,
-        totalPage: Math.ceil(list.length / das.pageSize),
-        totelSize: list.length
+        page: das.page * 1,
+        pageSize: das.pageSize * 1,
+        totalPage: Math.ceil(count / das.pageSize),
+        totelSize: count
       }
     } catch (e) {
       throw new Error(e)

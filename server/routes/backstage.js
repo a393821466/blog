@@ -4,6 +4,7 @@ const user = require('../controller/backstage/user')
 const menu = require('../controller/backstage/menu')
 const system = require('../controller/backstage/system')
 const article = require('../controller/backstage/article')
+const comment = require('../controller/backstage/comment')
 const checkToken = require('../middleware/checkToken')
 // const utils = require('../utils/')
 
@@ -52,5 +53,11 @@ backStageRouter.delete('/delArticle', checkToken, article.delArticle)
 backStageRouter.post('/ueditor/thumbnail', checkToken, article.uploadMiniImg)
 // 文章ueditor图片上传
 backStageRouter.post('/ueditor/content', checkToken, article.uplodContent)
+// 查询评论
+backStageRouter.get('/getComment', comment.getCommentList)
+// 更新评论状态
+backStageRouter.put('/updateComment', comment.updateComment)
+// 删除评论
+backStageRouter.delete('/delComment', comment.delComment)
 
 module.exports = backStageRouter

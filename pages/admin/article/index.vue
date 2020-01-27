@@ -3,7 +3,7 @@
     <div class="table-search">
       <el-form ref="form" :inline="true" class="searchView">
         <div class="searchInput s">
-          <el-form-item label="文章标题">
+          <el-form-item label="标题">
             <el-input
               v-model="ruleValue.title"
               type="text"
@@ -21,8 +21,8 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="所属菜单">
-            <el-select v-model="ruleValue.menus" placeholder="是否精选">
+          <el-form-item label="所属">
+            <el-select v-model="ruleValue.menus" placeholder="所属菜单">
               <el-option
                 v-for="item in menusList"
                 :key="item.id"
@@ -35,6 +35,19 @@
             <el-select v-model="ruleValue.banner" placeholder="是否属于轮播图">
               <el-option
                 v-for="item in bannerList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="评论">
+            <el-select
+              v-model="ruleValue.is_comment"
+              placeholder="是否开启评论"
+            >
+              <el-option
+                v-for="item in commentStatus"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -109,6 +122,16 @@
               disable-transitions
             >
               {{ scope.row.hot === 1 ? '是' : '否' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="评论" prop="comment">
+          <template slot-scope="scope">
+            <el-tag
+              :type="scope.row.is_comment === 1 ? 'success' : 'danger'"
+              disable-transitions
+            >
+              {{ scope.row.is_comment === 1 ? '开启' : '关闭' }}
             </el-tag>
           </template>
         </el-table-column>
@@ -198,9 +221,24 @@ export default {
         menus: 'all',
         banner: 'all',
         status: 'all',
-        hot: 'all'
+        hot: 'all',
+        is_comment: 'all'
       },
       listLoading: false,
+      commentStatus: [
+        {
+          value: 'all',
+          label: '全部'
+        },
+        {
+          value: 1,
+          label: '开启'
+        },
+        {
+          value: 2,
+          label: '关闭'
+        }
+      ],
       bannerList: [
         {
           value: 'all',

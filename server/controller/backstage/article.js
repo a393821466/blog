@@ -19,9 +19,10 @@ class articleController {
         menuId: query.menus,
         autor: 'Maple',
         summary: query.summary,
-        status: !query.status ? '' : Number(query.status),
-        hot: !query.hot ? '' : Number(query.hot),
-        showHome: !query.banner ? '' : Number(query.banner),
+        status: !query.status ? '' : query.status * 1,
+        hot: !query.hot ? '' : query.hot * 1,
+        showHome: !query.banner ? '' : query.banner * 1,
+        is_comment: !query.is_comment ? 1 : query.is_comment * 1,
         image: query.imageUrl,
         viewerNum: query.viewerNum,
         content: query.content,
@@ -54,6 +55,7 @@ class articleController {
         data.status,
         data.hot,
         data.showHome,
+        data.is_comment,
         data.image,
         data.viewerNum,
         data.content,
@@ -114,6 +116,10 @@ class articleController {
         menuId: !query.menus || query.menus == 'all' ? '' : query.menus,
         status: !query.status || query.status == 'all' ? '' : query.status,
         showHome: !query.banner || query.banner == 'all' ? '' : query.banner,
+        is_comment:
+          !query.is_comment || query.is_comment == 'all'
+            ? ''
+            : query.is_comment,
         page: !query.page ? 1 : query.page * 1,
         size: !query.pageSize ? 10 : query.pageSize * 1
       }
@@ -123,6 +129,7 @@ class articleController {
         das.menuId,
         das.status,
         das.showHome,
+        das.is_comment,
         das.page,
         das.size
       )
@@ -150,6 +157,7 @@ class articleController {
         status: !query.status ? '' : query.status * 1,
         hot: !query.hot ? '' : query.hot * 1,
         showHome: !query.banner ? '' : query.banner * 1,
+        is_comment: query.is_comment * 1,
         image: query.imageUrl,
         content: query.content,
         markContent: query.markContent
@@ -157,6 +165,9 @@ class articleController {
       let list = []
       if (!id) {
         ctx.error(400, '参数不完整')
+      }
+      if (data.is_comment != 1 && data.is_comment != 2) {
+        ctx.error(400, '参数不正确')
       }
       let findArticle = await articleService.singleArticle(id)
       if (findArticle.length === 0) {
@@ -178,6 +189,7 @@ class articleController {
         data.status,
         data.hot,
         data.showHome,
+        data.is_comment,
         data.image,
         data.content,
         data.markContent
