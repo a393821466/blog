@@ -34,6 +34,14 @@ export const nodeList = [
           title: '文章管理',
           requireAuth: false
         }
+      },
+      {
+        name: 'comment',
+        path: '/admin/comment',
+        meta: {
+          title: '评论管理',
+          requireAuth: false
+        }
       }
     ]
   }

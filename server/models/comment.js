@@ -56,7 +56,7 @@ exports.backstageComment = (val1, val2, page, size) => {
     _sql += `and c.status like ?`
     arr.push(val2)
   }
-  _sql += `ORDER BY c.create_time asc limit ?,?`
+  _sql += `ORDER BY c.create_time desc limit ?,?`
   arr.push((page - 1) * size, size)
   return query(_sql, arr)
 }

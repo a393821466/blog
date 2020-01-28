@@ -25,8 +25,18 @@ export default {
     del: `${api}/delArticle`,
     singleArticle: `${api}/getSingleArticle`
   },
+  // 上传文件
   upload: {
     thumbnail: `${api}/ueditor/thumbnail`, // 上传文章缩略图
     content: `${api}/ueditor/content` // 上传文章内容图
+  },
+  // 评论
+  comment: {
+    getComment: `${api}/getComment`, // 获取全部 (后端)
+    updateComment: `${api}/updateComment`, //更新文章状态 (后端)
+    delComment: `${api}/delComment`, // 删除文章 (后端)
+    backstageReply: `${api}/backstageReply`, // 回复评论 (后端)
+    sendComment: `/v1/sendComment`, // 回复 (前端,后端)
+    findComment: `/v1/getComment` // 查询评论 （前端）
   }
 }

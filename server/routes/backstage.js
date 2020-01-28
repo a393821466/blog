@@ -57,6 +57,8 @@ backStageRouter.post('/ueditor/content', checkToken, article.uplodContent)
 backStageRouter.get('/getComment', comment.getCommentList)
 // 更新评论状态
 backStageRouter.put('/updateComment', comment.updateComment)
+// 回复评论
+backStageRouter.post('/backstageReply', comment.backstageReply)
 // 删除评论
 backStageRouter.delete('/delComment', comment.delComment)
 
