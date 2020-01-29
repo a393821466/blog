@@ -8,5 +8,7 @@ const frontEndRouter = new Router({
 frontEndRouter.post('/sendComment', frontEnd.sendCommentController)
 // 查询评论
 frontEndRouter.get('/getComment', frontEnd.getCommentList)
+// 获取QQ信息
+frontEndRouter.post('/getInfoQQ', frontEnd.getQQinfo)
 
 module.exports = frontEndRouter

@@ -36,7 +36,8 @@ export default {
     updateComment: `${api}/updateComment`, //更新文章状态 (后端)
     delComment: `${api}/delComment`, // 删除文章 (后端)
     backstageReply: `${api}/backstageReply`, // 回复评论 (后端)
-    sendComment: `/v1/sendComment`, // 回复 (前端,后端)
-    findComment: `/v1/getComment` // 查询评论 （前端）
+    sendComment: `/v1/sendComment`, // 评论 (前端)
+    findComment: `/v1/getComment`, // 查询评论 （前端）
+    getQQInfo: `/v1/getInfoQQ` //查询QQ信息
   }
 }

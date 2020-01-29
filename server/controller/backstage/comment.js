@@ -72,7 +72,7 @@ class commentController {
     try {
       const query = ctx.query
       const das = {
-        acticleId: !query.id ? '' : query.id,
+        acticleId: !query.id || query.id == 'all' ? '' : query.id,
         status: !query.status || query.status == 'all' ? '' : query.status,
         page: !query.page ? 1 : query.page * 1,
         pageSize: !query.pageSize ? 10 : query.pageSize * 1
@@ -85,11 +85,15 @@ class commentController {
       )
       const count = findReplyCount.total
       ctx.body = {
-        value: findReplyCount.value,
-        page: das.page * 1,
-        pageSize: das.pageSize * 1,
-        totalPage: Math.ceil(count / das.pageSize),
-        totelSize: count
+        code: 200,
+        status: true,
+        value: {
+          data: findReplyCount.value,
+          page: das.page * 1,
+          pageSize: das.pageSize * 1,
+          totalPage: Math.ceil(count / das.pageSize),
+          totelSize: count
+        }
       }
     } catch (e) {
       throw new Error(e)

@@ -13,7 +13,9 @@ export const actions = {
   async getComment({ commit }, value) {
     const val = Qs.stringify(value)
     let ret = await axios.get(`${address.comment.getComment}?${val}`)
-    commit('GET_COMMENT', ret)
+    if (ret.status) {
+      commit('GET_COMMENT', ret)
+    }
     return ret
   },
   // UPDATECOMMENT
@@ -26,6 +28,11 @@ export const actions = {
   async delComment({ commit }, value) {
     const val = Qs.stringify(value)
     let ret = await axios.delete(`${address.comment.delComment}?${val}`)
+    return ret
+  },
+  // BACKSTAGEREPLY
+  async backstageReply({ commit }, value) {
+    let ret = await axios.post(address.comment.backstageReply, value)
     return ret
   }
 }

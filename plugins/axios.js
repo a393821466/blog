@@ -1,5 +1,5 @@
 import * as axios from 'axios'
-import { getNotSession, clearALLsession } from '../utils/storage'
+import { getNotSession, clearALLsession, setSession } from '../utils/storage'
 
 // eslint-disable-next-line no-unused-vars
 export default ({ store, redirect }) => {
@@ -29,6 +29,7 @@ export default ({ store, redirect }) => {
       if (ret.code === 401) {
         clearALLsession()
         redirect('/logsin')
+        setSession('breadLocation', JSON.stringify(['/admin/home']))
       }
       return ret
     },
@@ -37,6 +38,7 @@ export default ({ store, redirect }) => {
       if (res.code === 401) {
         clearALLsession()
         redirect('/logsin')
+        setSession('breadLocation', JSON.stringify(['/admin/home']))
       }
       const data = '系统繁忙,请稍后再试'
       const errors = !res ? data : res.msg

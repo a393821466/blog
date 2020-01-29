@@ -1,5 +1,8 @@
 const commentService = require('../../service/frontEnd/comment')
 const articleService = require('../../service/backstage/article')
+const request = require('superagent')
+const charset = require('superagent-charset')
+charset(request)
 class commentController {
   // 发表评论
   static async sendCommentController(ctx) {
@@ -31,6 +34,9 @@ class commentController {
       const getArticleId = await articleService.singleArticle(data.article_id)
       if (getArticleId.length == 0) {
         ctx.error(500, '找不到评论的文章')
+      }
+      if (getArticleId[0].is_comment == 2) {
+        ctx.error(500, '该文章评论已关闭')
       }
       if (data.reply_id != 0) {
         const idAndArticleIds = await commentService.idAndArticleId([
@@ -130,6 +136,46 @@ class commentController {
         totalPage: Math.ceil(count / das.pageSize),
         totelSize: count
       }
+    } catch (e) {
+      throw new Error(e)
+    }
+  }
+  // 获取QQ信息
+  static async getQQinfo(ctx) {
+    try {
+      let { qq } = ctx.request.body
+      if (!qq) {
+        ctx.error(400, '请输入QQ号')
+      }
+      let reg = /^[1-9][0-9]{4,9}$/gim
+      if (!reg.test(qq)) {
+        ctx.error(500, 'QQ号格式不正确')
+      }
+      let url = 'http://r.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg'
+      await request
+        .get(url)
+        .charset('gbk')
+        .query('g_tk=1518561325&uins=' + qq)
+        .then(rs => {
+          let da = rs.text
+          let num1 = da.indexOf('[')
+          let num2 = da.indexOf(']')
+          let resultData = JSON.parse(da.substring(num1, num2 + 1))
+          ctx.body = {
+            status: true,
+            code: 200,
+            value: {
+              qqNumber: qq,
+              qqIcon: 'http://q1.qlogo.cn/g?b=qq&nk=' + qq + '&s=100',
+              qqName: resultData[resultData.length - 2],
+              qqZone: 'http://user.qzone.qq.com/' + qq,
+              qqEmail: qq + '@qq.com'
+            }
+          }
+        })
+        .catch(err => {
+          ctx.error(err)
+        })
     } catch (e) {
       throw new Error(e)
     }

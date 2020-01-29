@@ -227,6 +227,9 @@ export default {
 }
 </script>
 
+<style lang="scss">
+@import '../assets/css/emoji.css'; // 导入精灵图样式
+</style>
 <style scoped lang="scss">
 $header-height: 50px;
 $background-color: rgb(253, 253, 253);

@@ -32,6 +32,16 @@ class commentService {
     const del = await commentModel.delComment(id)
     return del
   }
+  // 根据ID和文章ID获取评论
+  static async idAndArticleId(value) {
+    const findComment = await commentModel.idAndArticleId(value)
+    return findComment
+  }
+  // 回复
+  static async sendComment(value) {
+    const addComment = await commentModel.sendComment(value)
+    return addComment
+  }
 }
 
 module.exports = commentService
