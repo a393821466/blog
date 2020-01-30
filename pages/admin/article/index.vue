@@ -94,9 +94,32 @@
             <el-form
               label-position="left"
               inline
+              label-width="80px"
               class="demo-table-expand article_text"
             >
-              <el-form-item label="图片:" style="width:45%">
+              <el-form-item label="作者:">
+                <span>{{ props.row.autor }}</span>
+              </el-form-item>
+              <el-form-item label="浏览数:">
+                <span>{{ props.row.viewerNum }}</span>
+              </el-form-item>
+              <el-form-item label="精选:">
+                <el-tag
+                  :type="props.row.hot === 1 ? '' : 'info'"
+                  disable-transitions
+                >
+                  {{ props.row.hot === 1 ? '是' : '否' }}
+                </el-tag>
+              </el-form-item>
+              <el-form-item label="轮播图:">
+                <el-tag
+                  :type="props.row.showHome === 1 ? '' : 'warning'"
+                  disable-transitions
+                >
+                  {{ props.row.showHome === 1 ? '是' : '否' }}
+                </el-tag>
+              </el-form-item>
+              <el-form-item label="图片:">
                 <div class="bannerImg public_row">
                   <el-image
                     slot="reference"
@@ -106,7 +129,7 @@
                   />
                 </div>
               </el-form-item>
-              <el-form-item label="摘要:" style="width:50%">
+              <el-form-item label="摘要:">
                 <span class="public_row">{{ props.row.summary }}</span>
               </el-form-item>
             </el-form>
@@ -114,17 +137,6 @@
         </el-table-column>
         <el-table-column label="标题" prop="title" width="150" />
         <el-table-column label="所属菜单" prop="menuId" :formatter="menu" />
-        <el-table-column label="作者" prop="autor" />
-        <el-table-column label="精选" prop="hot">
-          <template slot-scope="scope">
-            <el-tag
-              :type="scope.row.hot === 1 ? '' : 'info'"
-              disable-transitions
-            >
-              {{ scope.row.hot === 1 ? '是' : '否' }}
-            </el-tag>
-          </template>
-        </el-table-column>
         <el-table-column label="评论" prop="comment">
           <template slot-scope="scope">
             <el-tag
@@ -132,16 +144,6 @@
               disable-transitions
             >
               {{ scope.row.is_comment === 1 ? '开启' : '关闭' }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="轮播图" prop="showHome">
-          <template slot-scope="scope">
-            <el-tag
-              :type="scope.row.showHome === 1 ? '' : 'warning'"
-              disable-transitions
-            >
-              {{ scope.row.showHome === 1 ? '是' : '否' }}
             </el-tag>
           </template>
         </el-table-column>
@@ -155,7 +157,6 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="浏览人数" prop="viewerNum" />
         <el-table-column
           label="创建日期"
           prop="create_time"
@@ -322,7 +323,6 @@ export default {
   },
   created() {
     this.getMenus()
-    this.getArticleList({ page: this.page, pageSize: this.pageSize })
   },
   methods: {
     ...mapActions({
@@ -364,6 +364,7 @@ export default {
     getMenus() {
       this.getMenuList()
         .then(res => {
+          this.getArticleList({ page: this.page, pageSize: this.pageSize })
           if (!res.status) {
             this.$message.error(res.msg)
           }
@@ -476,18 +477,18 @@ export default {
     margin-top: 10px;
   }
   .article_text {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     .el-form-item__label {
-      width: 100%;
-      border-bottom: 1px solid #409eff;
-      border-top: 1px solid #409eff;
-      background: #409eff;
-      margin-bottom: 5px;
-      text-indent: 10px;
-      font-size: 16px;
-      color: #fff;
+      font-weight: bold;
     }
     .public_row {
-      padding: 0 10px;
+      width: 150px;
+      height: 150px;
+    }
+    .el-form-item {
+      flex: 0 0 48%;
     }
   }
 }

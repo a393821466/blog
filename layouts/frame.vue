@@ -13,7 +13,8 @@
               size="medium"
             />
             <span class="el-dropdown-link" style="line-height:60px;">
-              您好,lala<i class="el-icon-arrow-down el-icon--right" />
+              您好,{{ info.nicename
+              }}<i class="el-icon-arrow-down el-icon--right" />
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-user-solid">
@@ -99,7 +100,7 @@
 // import qs from 'qs'
 import { nodeList } from '@/utils/routeList'
 import { setSession, getSession, clearALLsession } from '@/utils/storage'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   layout: 'frame',
   name: 'Frame',
@@ -120,8 +121,14 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      userInfo: 'user/userInfo'
+    }),
     nodeList() {
       return nodeList
+    },
+    info() {
+      return this.userInfo
     },
     breadcrumbList() {
       let breadcrumbs = []
@@ -149,6 +156,7 @@ export default {
   },
   mounted() {
     let getRoutePath = getSession('breadLocation')
+    const getUser = getSession('userInfo')
     this.defaultPath = this.$route.path
     this.$router.push({ path: this.$route.path })
     const dH = window.screen.availHeight - 100
@@ -161,13 +169,12 @@ export default {
       ? new Array(this.defaultPath)
       : getRoutePath
     this.handleSelect(normalRoute[normalRoute.length - 1], normalRoute)
-    // if (this.allRouters.length == 0) {
-    //   this.allRouters = this.allRouters.concat(nodeList)
-    // }
+    this.getUserInfo({ id: getUser.id })
   },
   methods: {
     ...mapActions({
-      logout: 'common/logout'
+      logout: 'common/logout',
+      getUserInfo: 'user/userInfos'
     }),
     logouts() {
       const that = this

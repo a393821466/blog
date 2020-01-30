@@ -39,5 +39,10 @@ export default {
     sendComment: `/v1/sendComment`, // 评论 (前端)
     findComment: `/v1/getComment`, // 查询评论 （前端）
     getQQInfo: `/v1/getInfoQQ` //查询QQ信息
+  },
+  system: {
+    logoUpload: `${api}/uploadImg`,
+    addSystem: `${api}/addSystem`,
+    getSystem: `${api}/getSystem`
   }
 }

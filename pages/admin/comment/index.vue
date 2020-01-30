@@ -49,21 +49,24 @@
               >
                 <el-form-item
                   label="内容:"
-                  style="width:90%;background:#f8f8f8;border:dashed 1px #eee;border-radius:5px;text-indent:10px;"
+                  style="width:90%;background:#f8f8f8;border:dashed 1px #eee;border-radius:5px;"
                 >
                   <!-- eslint-disable-next-line vue/no-v-html -->
-                  <div class="bannerImg public_row">
-                    {{ props.row.comment_text }}
-                  </div>
+                  <div
+                    class="bannerImg public_row"
+                    v-html="props.row.comment_text"
+                  />
                 </el-form-item>
                 <el-form-item
                   v-show="openReply == props.row.id"
                   label="回复:"
                   style="width:90%;"
                 >
-                  <textarea
+                  <el-input
                     id="textpanel"
                     v-model="content"
+                    type="textarea"
+                    :autosize="{ minRows: 2, maxRows: 4 }"
                     class="comment-input"
                     placeholder="请输入内容"
                   />
@@ -72,7 +75,7 @@
                       <!-- eslint-disable-next-line vue/html-self-closing -->
                       <img src="../../../static/images/face_logo.png" />
                     </div>
-
+                    <span @click="onClickCode">code</span>
                     <div
                       class="comment-send-btn comment-send-btn-bounce"
                       @click="saveComment(props.row)"
@@ -85,7 +88,7 @@
                     />
                   </div>
                 </el-form-item>
-                <el-form-item label="操作:" style="width:90%;text-indent:10px;">
+                <el-form-item label="操作:" style="width:90%;">
                   <el-button
                     v-show="props.row.reply_id == 0"
                     type="primary"
@@ -275,7 +278,14 @@ export default {
     }),
     // 点击回复
     saveComment(row) {
-      this.comments = this.content.replace(/:.*?:/g, this.emoji)
+      this.comments = this.content
+        .replace(/:.*?:/g, this.emoji)
+        .replace(/\[code]/g, '<pre class="hl">')
+        .replace(/\[\/code]/g, '</pre>')
+        .replace(/[|]*\n/, '')
+        .replace(/&nbsp;/gi, '')
+      // this.comments.replace(/\[code]/g, '<pre><code>')
+      // this.comments.replace(/\[\/code]/g, '</code></pre>')
       const das = {
         articleId: row.article_id,
         replyId: row.id,
@@ -292,6 +302,7 @@ export default {
             this.$message.success('回复成功')
             this.content = ''
             this.comments = ''
+            this.openReply = 0
             this.isShowEmojiPanel = false
             return
           }
@@ -317,10 +328,10 @@ export default {
       this.content = el.value + ':' + text + ':'
     },
     // 导入代码
-    // appendCode() {
-    //   const el = document.getElementById('textpanel')
-    //   this.content = el.value + '[pre] [/pre]'
-    // },
+    onClickCode() {
+      const el = document.getElementById('textpanel')
+      this.content = el.value + '\n' + '[code]' + '\n\n' + '[/code]'
+    },
     replyMsg(row) {
       if (this.openReply == row.id) {
         this.openReply = 0
@@ -465,7 +476,7 @@ export default {
         page: page,
         pageSize: this.pageSize
       }
-      this.comment(das)
+      this.comment('', das)
     },
     // 格式化时间
     formDates(row, column) {
@@ -480,123 +491,46 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~assets/css/comment.scss';
 .comment_table_content {
   .page {
     margin-top: 20px;
   }
-  .emoji-item-common {
-    background: url('../../../static/images/emoji_sprite.png');
-    display: inline-block;
-    &:hover {
-      cursor: pointer;
+  .article_text {
+    .el-form-item__label {
+      width: 100%;
+      background: #409eff;
+      color: #f8f8f8;
+      margin-bottom: 10px;
+      text-indent: 10px;
     }
-  }
-  .emoji-size-small {
-    // 表情大小
-    zoom: 0.3;
-  }
-  .emoji-size-large {
-    zoom: 0.5; // emojipanel表情大小
-    margin: 4px;
-  }
-  .comments-list {
-    margin-top: 20px;
-    .comments-list-item {
-      margin-bottom: 20px;
-      .comments-list-item-heading {
-        display: inline-block;
-        img {
-          height: 32px;
-          width: 32px;
-          border-radius: 50%;
-          vertical-align: middle;
-        }
-        .comments-list-item-username {
-          margin-left: 5px;
-          font-weight: bold;
-        }
+    .el-form-item__content {
+      padding: 0 10px;
+      width: 100%;
+      min-height: 40px;
+      .opration {
+        width: 518px;
       }
-      .comments-list-item-content {
-        margin: 10px 0px;
-        border-bottom: 1px solid #cccccc;
-        &:last-child {
-          border-bottom: 0;
-        }
-        span {
-          vertical-align: top;
-        }
+      .public_row {
+        line-height: 26px;
+        padding-left: 5px;
+      }
+      .emoji-item-common {
+        margin: 0 3px;
       }
     }
-  }
-  .comment-input {
-    height: 100px;
-    width: 500px;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    padding: 10px;
-    resize: none;
-    &:focus {
-      outline: none;
-    }
-  }
-  .opration {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    .emoji-panel-btn {
-      &:hover {
-        cursor: pointer;
-        opacity: 0.8;
-      }
-      img {
-        height: 24px;
-        width: 24px;
-      }
-    }
-    .comment-send-btn {
-      width: 80px;
-      height: 30px;
-      line-height: 30px;
-      text-align: center;
-      border-radius: 100px;
-      box-sizing: border-box;
-      font-weight: bold;
-      font-size: 13px;
-      color: #ffffff;
-      background-color: #4ab3f4;
-      &:hover {
-        cursor: pointer;
-      }
-    }
-    .comment-send-btn-bounce {
-      position: relative;
-    }
-    .comment-send-btn-bounce:focus {
-      outline: none;
-    }
-    .comment-send-btn-bounce:after {
-      content: '';
+    .hl {
       display: block;
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      right: 0px;
-      bottom: 0px;
-      border-radius: 100px;
-      border: 0px solid #1da1f2;
-      opacity: 0.7;
-      transition: all 0.1s;
-    }
-    .comment-send-btn-bounce:active:after {
-      //.bounce active时 伪元素:after的样式
-      opacity: 1;
-      top: -5px;
-      left: -5px;
-      right: -5px;
-      bottom: -5px;
-      border-radius: 100px;
-      border: 2px solid #1da1f2;
-      transition: all 0.2s;
+      padding: 9.5px;
+      margin: 10px 0 10px;
+      font-size: 14px;
+      line-height: 1.42857143;
+      color: #333;
+      word-break: break-all;
+      word-wrap: break-word;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #eee;
     }
   }
 }

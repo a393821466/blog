@@ -103,8 +103,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { getSession } from '@/utils/storage'
+// import { mapActions } from 'vuex'
+// import { getSession } from '@/utils/storage'
 export default {
   layout: 'frame',
   data() {
@@ -114,14 +114,7 @@ export default {
       imageUrl: ''
     }
   },
-  mounted() {
-    const getUser = getSession('userInfo')
-    this.getUserInfo({ id: getUser.id })
-  },
   methods: {
-    ...mapActions({
-      getUserInfo: 'user/userInfos'
-    }),
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
     },

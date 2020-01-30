@@ -120,6 +120,7 @@ class commentController {
       const update = await commentService.updateComment(das.id, [das.status])
       if (das.status == 3) {
         await commentService.delComment(query.id)
+        await commentService.delReplyComment(query.id)
       }
       if (!update) {
         ctx.error(500, '更新失败')
@@ -145,6 +146,9 @@ class commentController {
         ctx.error(500, '该评论不存在')
       }
       const deleteComment = await commentService.delComment(query.id)
+      if (getComment[0].reply_id == 0) {
+        await commentService.delReplyComment(query.id)
+      }
       if (!deleteComment) {
         ctx.error(500, '删除失败')
       }

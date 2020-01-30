@@ -23,8 +23,8 @@ export const actions = {
 // STORE MUTATION
 export const mutations = {
   // USERINFO
-  GET_USERINFO(state, value) {
-    state.userInfo = value
+  GET_USERINFO(state, res) {
+    state.userInfo = res.value
   }
 }
 

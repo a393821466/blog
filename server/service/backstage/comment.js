@@ -27,9 +27,14 @@ class commentService {
     const update = await commentModel.updateCommentStatus(arr)
     return update
   }
-  // 后端删除评论
+  // 后端id删除评论
   static async delComment(id) {
     const del = await commentModel.delComment(id)
+    return del
+  }
+  // 后端reply_id删除评论
+  static async delReplyComment(id) {
+    const del = await commentModel.delReplyComment(id)
     return del
   }
   // 根据ID和文章ID获取评论

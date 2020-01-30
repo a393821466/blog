@@ -4,7 +4,7 @@ export const nodeList = [
     name: 'home',
     meta: {
       requireAuth: false,
-      title: '首页',
+      title: '概括',
       icon: 'example',
       list: ['/admin/home']
     }
@@ -40,6 +40,26 @@ export const nodeList = [
         path: '/admin/comment',
         meta: {
           title: '评论管理',
+          requireAuth: false
+        }
+      }
+    ]
+  },
+  {
+    path: '/admin/setting',
+    name: 'system',
+    meta: {
+      title: '全局管理',
+      requireAuth: false,
+      icon: 'example',
+      list: ['/admin/setting']
+    },
+    children: [
+      {
+        path: '/admin/setting',
+        name: 'setting',
+        meta: {
+          title: '基础配置',
           requireAuth: false
         }
       }

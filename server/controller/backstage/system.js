@@ -34,12 +34,12 @@ class systemController {
   static async addSystem(ctx) {
     try {
       const query = ctx.request.body
-      let token = ctx.session.userToken.token
-
+      let token = ctx.request.headers['authorization']
       const data = {
         title: query.title,
         summary: query.summary,
         logo: query.logo,
+        logoImg: query.logoImg,
         seo: query.seo
       }
       let payload = await utils.decryptToken(token)
@@ -51,6 +51,7 @@ class systemController {
           data.title,
           data.summary,
           data.logo,
+          data.logoImg,
           data.seo
         ])
       } else {
@@ -58,9 +59,11 @@ class systemController {
           data.title,
           data.summary,
           data.logo,
+          data.logoImg,
           data.seo
         ])
       }
+      console.log(systemInfo)
       if (!systemInfo) {
         ctx.error(500, '系统繁忙,请稍后在试')
       }

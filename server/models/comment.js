@@ -101,8 +101,13 @@ exports.updateCommentStatus = value => {
   return query(_sql, value)
 }
 
-// 后端删除评论
+// 后端根据ID删除评论
 exports.delComment = value => {
   let _sql = `delete from blog_comment where id=?`
+  return query(_sql, value)
+}
+// 后端根据ID删除评论
+exports.delReplyComment = value => {
+  let _sql = `delete from blog_comment where reply_id=?`
   return query(_sql, value)
 }
