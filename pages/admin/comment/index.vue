@@ -51,7 +51,7 @@
                   label="内容:"
                   style="width:90%;background:#f8f8f8;border:dashed 1px #eee;border-radius:5px;"
                 >
-                  <!-- eslint-disable-next-line vue/no-v-html -->
+                  <!-- eslint-disable -->
                   <div
                     class="bannerImg public_row"
                     v-html="props.row.comment_text"

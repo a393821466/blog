@@ -53,4 +53,7 @@ html {
   color: #fff;
   background-color: #35495e;
 }
+body {
+  background: #f4f5f5;
+}
 </style>

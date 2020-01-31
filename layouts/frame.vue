@@ -12,7 +12,7 @@
               src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
               size="medium"
             />
-            <span class="el-dropdown-link" style="line-height:60px;">
+            <span class="el-dropdown-link">
               您好,{{ info.nicename
               }}<i class="el-icon-arrow-down el-icon--right" />
             </span>
@@ -252,11 +252,11 @@ $color: #dddddd;
     background-color: $background-color;
     color: $color;
     border-bottom: 1px solid #ddd;
-    line-height: 60px;
     .logo {
       color: #fff;
       float: left;
-      font-size: 23px;
+      font-size: 24px;
+      line-height: 60px;
     }
     .el-dropdown {
       cursor: pointer;
@@ -264,6 +264,7 @@ $color: #dddddd;
     }
     .el-dropdown-link {
       color: #f8f8f8;
+      line-height: 60px;
     }
   }
 }
@@ -292,8 +293,8 @@ $color: #dddddd;
 }
 .el-avatar {
   float: left;
-  margin-top: 10px;
-  margin-right: 5px;
+  margin-right: 8px;
+  margin-top: 12px;
   &:focus {
     outline: none;
   }
